@@ -10,7 +10,7 @@
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
 	"appid": "wx200bb53e73d53f1e",
-	"projectname": "mpvueapp",
+	"projectname": "daka",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"condition": {
