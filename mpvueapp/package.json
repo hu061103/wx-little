@@ -20,7 +20,8 @@
     "build:my": "node build/build.js my",
     "dev": "node build/dev-server.js wx",
     "start": "npm run dev",
-    "build": "node build/build.js wx"
+    "build": "node build/build.js wx",
+    "watch": "nodemon build/dev-server.js wx"
   },
   "dependencies": {
     "mpvue": "^2.0.0",

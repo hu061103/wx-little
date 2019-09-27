@@ -1,10 +1,11 @@
 {
   "pages": [
+    "pages/mine/main",
     "pages/index/main",
     "pages/logs/main",
     "pages/counter/main",
-    "pages/shenqing/main",
-    "pages/mine/main"
+    "pages/shenqing/main"
+    
   ],
   "window": {
     "backgroundTextStyle": "light",
