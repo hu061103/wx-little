@@ -55,7 +55,9 @@ export default {
       width: 50,
       height: 50
     }],
-    juli:0
+    juli:0,
+    timer:null,
+    date:""
     };
   },
 
@@ -76,27 +78,12 @@ export default {
         
       }
     });
+     this.timer = setInterval(() => {
+      this.show(); // 修改数据date
+    }, 1000);
     
  },
-  methods: {
-  GetDistance( lat1,  lng1,  lat2,  lng2){
-    console.log(lat2,lng2)
-    var radLat1 = lat1*Math.PI / 180.0;
-    var radLat2 = lat2*Math.PI / 180.0;
-    var a = radLat1 - radLat2;
-    var  b = lng1*Math.PI / 180.0 - lng2*Math.PI / 180.0;
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
-    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
-    s = s *6378.137 ;// EARTH_RADIUS;
-    s = Math.round(s * 10000) / 10000;
-    console.log(s)
-    this.juli =s 
-    
-    
-}
-
-    
-  },
+ 
    beforeDestroy() {
     if (this.timer) {
       clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
@@ -129,7 +116,7 @@ export default {
       var h = d.getHours(); // 16下午4点     24小时制
       var m = d.getMinutes(); //31分
       var s = d.getSeconds(); //50秒
-     s= s<10?'0'+s:s
+      s= s<10?'0'+s:s
       this.date = `${h}:${m}:${s}`;
     }
   },
