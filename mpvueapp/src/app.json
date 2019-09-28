@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/mine/main",
     "pages/index/main",
+    "pages/mine/main",
     "pages/logs/main",
     "pages/counter/main",
     "pages/shenqing/main"

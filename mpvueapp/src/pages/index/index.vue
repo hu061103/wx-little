@@ -50,10 +50,8 @@ export default {
   data() {
     return {
       txt: "打卡首页",
-      latitude: "",
-      longitude: "",
       markers: [{
-      iconPath: "../img/gongsi.png",
+      iconPath: require("../img/gongsi.png"),
       id: 0,
       latitude: '30.45829881923435',
       longitude: '114.42828465912626',
@@ -68,6 +66,7 @@ export default {
     // card
   },
   mounted() {
+    var that = this;
     mpvue.getLocation({
       type: "wgs84",
       success: res => {
@@ -75,9 +74,8 @@ export default {
         const longitude = res.longitude;
         const speed = res.speed;
         const accuracy = res.accuracy;
-        this.latitude = latitude;
-        this.longitude=  longitude
-
+        console.log(latitude,longitude);
+        that.GetDistance(30.45829881923435,114.42828465912626,latitude,longitude)
         // this.setData({
         //   latitude,
         //   longitude,
@@ -95,10 +93,11 @@ export default {
     });
     
     // console.log(this.latitude)
-    this.GetDistance(30.45829881923435,114.42828465912626,this.latitude,this.longitude)
+    // this.GetDistance(30.45829881923435,114.42828465912626,this.latitude,this.longitude)
  },
   methods: {
   GetDistance( lat1,  lng1,  lat2,  lng2){
+    console.log(lat2,lng2)
     var radLat1 = lat1*Math.PI / 180.0;
     var radLat2 = lat2*Math.PI / 180.0;
     var a = radLat1 - radLat2;
@@ -109,6 +108,7 @@ export default {
     s = Math.round(s * 10000) / 10000;
     console.log(s)
     this.juli =s 
+    
     
 }
 
