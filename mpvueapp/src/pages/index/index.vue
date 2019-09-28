@@ -9,7 +9,6 @@
         show-location
         style="width: 100%; height: 100%;"
         :markers="markers"
-        
       ></map>
     </div>
 
@@ -31,10 +30,10 @@
       <div class="content">
         <div class="quan">
           <div class="one" style="font-weight: 600">签到</div>
-          <div class="two" style="font-size:13px">14:40:12</div>
+          <div id="time" class="two" style="font-size:13px"> {{date}} </div>
         </div>
         <div class="fanwei">已进入考勤范围 {{juli}}</div>
-        
+
         <div class="bottom-img">
           <img src="../img/jianying.jpg" alt />
         </div>
@@ -52,15 +51,18 @@ export default {
       txt: "打卡首页",
       latitude: "",
       longitude: "",
-      markers: [{
-      iconPath: "../img/gongsi.png",
-      id: 0,
-      latitude: '30.45829881923435',
-      longitude: '114.42828465912626',
-      width: 50,
-      height: 50
-    }],
-    juli:0
+      markers: [
+        {
+          iconPath: "../img/gongsi.png",
+          id: 0,
+          latitude: "30.45829881923435",
+          longitude: "114.42828465912626",
+          width: 50,
+          height: 50
+        }
+      ],
+      juli: 0,
+      date: new Date()
     };
   },
 
@@ -68,6 +70,7 @@ export default {
     // card
   },
   mounted() {
+    let that = this;
     mpvue.getLocation({
       type: "wgs84",
       success: res => {
@@ -76,7 +79,7 @@ export default {
         const speed = res.speed;
         const accuracy = res.accuracy;
         this.latitude = latitude;
-        this.longitude=  longitude
+        this.longitude = longitude;
 
         // this.setData({
         //   latitude,
@@ -93,25 +96,51 @@ export default {
         // });
       }
     });
-    
+    // const lat = this.latitude ;
+    // const lon = this.longitude;
     // console.log(this.latitude)
-    this.GetDistance(30.45829881923435,114.42828465912626,this.latitude,this.longitude)
- },
-  methods: {
-  GetDistance( lat1,  lng1,  lat2,  lng2){
-    var radLat1 = lat1*Math.PI / 180.0;
-    var radLat2 = lat2*Math.PI / 180.0;
-    var a = radLat1 - radLat2;
-    var  b = lng1*Math.PI / 180.0 - lng2*Math.PI / 180.0;
-    var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a/2),2) +
-    Math.cos(radLat1)*Math.cos(radLat2)*Math.pow(Math.sin(b/2),2)));
-    s = s *6378.137 ;// EARTH_RADIUS;
-    s = Math.round(s * 10000) / 10000;
-    console.log(s)
-    this.juli =s 
-    
-}
+    // console.log(this.props)
+    // this.GetDistance(30.45829881923435,lat,lon)
 
+    this.timer = setInterval(() => {
+       this.show(); // 修改数据date
+    }, 1000);
+  },
+   beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+    }
+  },
+  methods: {
+    GetDistance(lat1, lng1, lat2, lng2) {
+      var radLat1 = lat1 * Math.PI / 180.0;
+      var radLat2 = lat2 * Math.PI / 180.0;
+      var a = radLat1 - radLat2;
+      var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+      var s =
+        2 *
+        Math.asin(
+          Math.sqrt(
+            Math.pow(Math.sin(a / 2), 2) +
+              Math.cos(radLat1) *
+                Math.cos(radLat2) *
+                Math.pow(Math.sin(b / 2), 2)
+          )
+        );
+      s = s * 6378.137; // EARTH_RADIUS;
+      s = Math.round(s * 10000) / 10000;
+      console.log(s);
+      console.log(lat2, "---" + lng2);
+      this.juli = s;
+    },
+    show() {
+      var d = new Date();
+      var h = d.getHours(); // 16下午4点     24小时制
+      var m = d.getMinutes(); //31分
+      var s = d.getSeconds(); //50秒
+     s= s<10?'0'+s:s
+      this.date = `${h}:${m}:${s}`;
+    }
   },
 
   created() {
