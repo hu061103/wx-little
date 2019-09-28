@@ -40,6 +40,9 @@ export default {
         return{
             msg:"vue"
         }
+    },
+    methods:{
+        
     }
 }
 </script>
