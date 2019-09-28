@@ -9,7 +9,6 @@
         show-location
         style="width: 100%; height: 100%;"
         :markers="markers"
-        
       ></map>
     </div>
 
@@ -31,10 +30,10 @@
       <div class="content">
         <div class="quan">
           <div class="one" style="font-weight: 600">签到</div>
-          <div class="two" style="font-size:13px">14:40:12</div>
+          <div id="time" class="two" style="font-size:13px"> {{date}} </div>
         </div>
         <div class="fanwei">已进入考勤范围 {{juli}}</div>
-        
+
         <div class="bottom-img">
           <img src="../img/jianying.jpg" alt />
         </div>
@@ -44,8 +43,6 @@
 </template>
 
 <script>
-// import card from '@/components/card'
-
 export default {
   data() {
     return {
@@ -76,24 +73,10 @@ export default {
         const accuracy = res.accuracy;
         console.log(latitude,longitude);
         that.GetDistance(30.45829881923435,114.42828465912626,latitude,longitude)
-        // this.setData({
-        //   latitude,
-        //   longitude,
-        //   markers: [{
-        //     id: "1",
-        //     latitude: 30.45829881923435,
-        //     longitude: 114.42828465912626,
-        //     width: 50,
-        //     height: 50,
-        //     iconPath: "../img/gongsi.png",
-        //     title: "哪里"
-        //   }]
-        // });
+        
       }
     });
     
-    // console.log(this.latitude)
-    // this.GetDistance(30.45829881923435,114.42828465912626,this.latitude,this.longitude)
  },
   methods: {
   GetDistance( lat1,  lng1,  lat2,  lng2){
@@ -112,48 +95,47 @@ export default {
     
 }
 
+    
+  },
+   beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer); // 在Vue实例销毁前，清除我们的定时器
+    }
+  },
+  methods: {
+    GetDistance(lat1, lng1, lat2, lng2) {
+      var radLat1 = lat1 * Math.PI / 180.0;
+      var radLat2 = lat2 * Math.PI / 180.0;
+      var a = radLat1 - radLat2;
+      var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+      var s =
+        2 *
+        Math.asin(
+          Math.sqrt(
+            Math.pow(Math.sin(a / 2), 2) +
+              Math.cos(radLat1) *
+                Math.cos(radLat2) *
+                Math.pow(Math.sin(b / 2), 2)
+          )
+        );
+      s = s * 6378.137; // EARTH_RADIUS;
+      s = Math.round(s * 10000) / 10000;
+      console.log(s);
+      console.log(lat2, "---" + lng2);
+      this.juli = s;
+    },
+    show() {
+      var d = new Date();
+      var h = d.getHours(); // 16下午4点     24小时制
+      var m = d.getMinutes(); //31分
+      var s = d.getSeconds(); //50秒
+     s= s<10?'0'+s:s
+      this.date = `${h}:${m}:${s}`;
+    }
   },
 
   created() {
-    // let app = getApp()
-    //app.js
-    // App({
-    //   onLaunch: function () {
-    //     // 展示本地存储能力
-    //     var logs = wx.getStorageSync('logs') || []
-    //     logs.unshift(Date.now())
-    //     wx.setStorageSync('logs', logs)
-    //     // 登录
-    //     wx.login({
-    //       success: res => {
-    //         // 发送 res.code 到后台换取 openId, sessionKey, unionId
-    //       }
-    //     })
-    //     // 获取用户信息
-    //     wx.getSetting({
-    //       success: res => {
-    //         if (res.authSetting['scope.userInfo']) {
-    //           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
-    //           wx.getUserInfo({
-    //             success: res => {
-    //               // 可以将 res 发送给后台解码出 unionId
-    //               this.globalData.userInfo = res.userInfo
-    //               // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-    //               // 所以此处加入 callback 以防止这种情况
-    //               if (this.userInfoReadyCallback) {
-    //                 this.userInfoReadyCallback(res)
-    //               }
-    //             }
-    //           })
-    //         }
-    //       }
-    //     })
-    //   },
-    //   globalData: {
-    //     userInfo: null,
-    //     token:"1906daydayup"
-    //   }
-    // })
+    
   }
 };
 </script>
